@@ -20,3 +20,11 @@ composer install
 ```
 php bin/console doctrine:schema:update --force
 ```
+
+## 4. Démarrer le serveur de développement
+
+- Démarrer le serveur et commencer à utiliser et à modifier l'application
+
+```
+symfony server:start
+```
