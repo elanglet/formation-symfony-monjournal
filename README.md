@@ -14,8 +14,8 @@ composer install
 
 ## 3. Base de données
 
-Créer la base de données
-Modifier la valeur de `DATABASE_URL` dans le fichier `.env`
+- Créer la base de données
+- Modifier la valeur de `DATABASE_URL` dans le fichier `.env`
 
 ```
 php bin/console doctrine:schema:update --force
