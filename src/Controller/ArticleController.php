@@ -94,13 +94,22 @@ class ArticleController extends AbstractController
                                         // Attention au 'use Symfony\Component\HttpFoundation\Request;' !!!    
 
         // 4. Décision :
-        if($form->isSubmitted()) {
-            // Le formulaire est soumis...
+        if($form->isSubmitted() && $form->isValid()) {
+            // Le formulaire est soumis... l'entité est valorisée avec les données saisies dans le formulaire
             // Enregistrer l'entité dans la base
             $this->em->persist($article);
             // Permet de valider les modifications dans la base de données.
             $this->em->flush();
-            // Il faudra prévoir un affichage ...
+
+            // On redirige vers la page d'affichage de ce nouvel article.
+            return $this->redirect(
+                $this->generateUrl(
+                    'article_afficher',                 // Nom de la route
+                    [
+                        'id' => $article->getId()       // Nom du paramètre de la route associé à sa valeur
+                    ]
+                )
+            );
         }
         else {
             // Le formulaire doit être affiché
@@ -113,31 +122,42 @@ class ArticleController extends AbstractController
         }
     }
 
-
-
-
-
     // Modifier un article via son id unique
     #[Route('/article/modifier/{id}', name: 'article_modifier')]
-    public function modifierArticle($id): Response
+    public function modifierArticle($id, Request $request): Response
     {
         // 1. Récupérer l'article à modifier par son id dans la base
         $article = $this->em->getRepository('App\Entity\Article')->find($id);
-
-        // 2. Mettre à jour les informations de l'article
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $article->setDate($date);
-
-        // 3. Enregistrer les modifications avec persist() + flush()
-        $this->em->persist($article);
-        $this->em->flush();
-
-        return $this->render(
-            'article/modifier.html.twig', 
-            [
-                
-            ]
+        // 2. On créé le formulaire ET on l'associe à l'entité
+        $form = $this->createForm(
+            ArticleType::class,         // La classe de formulaire. Attention au 'use App\Form\ArticleType;' !!!
+            $article                    // L'instance de l'entité à associer au formulaire
         );
+        // 3. Traitement de la requête : savoir si on souhaite afficher ou traiter le formulaire
+        $form->handleRequest($request); // $request doit être déclaré en paramètre de l'action
+        // 4. Décision :
+        if($form->isSubmitted() && $form->isValid()) {
+            // Le formulaire est soumis... l'entité est valorisée avec les données saisies dans le formulaire
+            // Enregistrer l'entité dans la base
+            $this->em->persist($article);
+            // Permet de valider les modifications dans la base de données.
+            $this->em->flush();
+
+            // On redirige vers la page d'affichage de ce nouvel article.
+            return $this->redirect(
+                $this->generateUrl(
+                    'article_afficher',                 // Nom de la route
+                    [ 'id' => $article->getId() ]       // Nom du paramètre de la route associé à sa valeur
+                )
+            );
+        }
+        else {
+            // Le formulaire doit être affiché
+            return $this->render(
+                'article/modifier.html.twig',       // Penser à modifier le template pour afficher le formulaire de modification
+                [ 'articleForm' => $form->createView() ]   // On transmet l'objet de formulaire au template de vue
+            );
+        }
     }
 
     // Supprimer un article via son id unique

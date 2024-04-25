@@ -1,10 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier un article{% endblock %}
+{% block title %}Modifier un article - {{ parent() }}{% endblock %}
 
 {% block body %}
+
+{{ parent() }}
+
 <div>
-    <h1>Modifier un article</h1>
+    <h2>Modifier un article</h2>
+
+    {# 
+        Affichage du formulaire grâce à la fonction form() de Twig 
+        Cette fonction prend en paramètre la variable créée dans l'action
+        et qui représente le formulaire    
+    #}
+
+    {{ form(articleForm) }}
 
 </div>
 {% endblock %}
