@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rédiger un article - {{ parent() }} {% endblock %}
+
+{% block body %}
+
+{{ parent() }}
+
+<div>
+    <h2>Rédiger un article</h2>
+
+    {# 
+        Affichage du formulaire grâce à la fonction form() de Twig 
+        Cette fonction prend en paramètre la variable créée dans l'action
+        et qui représente le formulaire    
+    #}
+
+    {{ form(articleForm) }}
+
+</div>
+{% endblock %}

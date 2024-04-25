@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.titre }} - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+{# Pour afficher le contenu du block 'body' du gabarit 'base.html.twig', on peut utiliser la fonction parent() dans une expression #}
+
+{{ parent() }}
+
+<div>
+    {# 
+        'article' est la variable Twig transmise par l'action. 
+        On accède à l'attribut 'titre' de l'objet Article.
+    #}
+    <h1>{{ article.titre | title }}</h1>
+    <p>
+        {# le filtre date() permet de gérer l'affichage des données PHP de type DateTime #}
+        Ecrit par <strong>{{ article.auteur }}</strong>, le {{ article.date | date("d/m/Y") }} à {{ article.date | date("H:i") }}
+    </p>
+    <p>
+        {{ article.texte }}
+    </p>
+    <p>
+        {# path() permet de générer le lien. 'article_tous' est le NOM de la route #}
+        <a href="{{ path('article_tous') }}">Retour à la liste</a>
+    </p>
+    <p>
+        {# Lien pour modifier l'article #}
+        <a href="{{ path('article_modifier', { 'id': article.id }) }}">
+            Modifier l'article
+        </a>
+    </p>
+    <p>
+        {# Lien pour supprimer l'article #}
+        <a href="{{ path('article_supprimer', { 'id': article.id }) }}">
+            Supprimer l'article
+        </a>
+    </p>
+
+</div>
+{% endblock %}

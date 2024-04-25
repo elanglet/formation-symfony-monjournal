@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous les articles - {{ parent() }} {% endblock %}
+
+{% block body %}
+
+{# Pour afficher le contenu du block 'body' du gabarit 'base.html.twig', on peut utiliser la fonction parent() dans une expression #}
+
+{{ parent() }}
+
+<div>
+
+    <p>
+        <a href="{{ path('article_creer') }}">Créer un article</a>
+    </p>
+
+    <h1>Tous les articles</h1>
+
+    {# On affiche les messages flash #}
+    {% for msg in app.flashes('notice') %}
+        <div class="alert-success">
+            {{ msg }}
+        </div>
+    {% endfor %}
+
+    {# 'article' représente chaque objet de la liste #}
+    {# 'les_articles' est la liste transmise depuis l'action du contrôleur #}
+    {% for article in les_articles %}
+
+        <h3>{{ article.titre }}</h3>
+        <p>
+            Ecrit par {{ article.auteur }}, le {{ article.date | date("d/m/Y") }} à {{ article.date | date("H:i") }}
+        </p>
+        <p>
+            {# Pour les routes possédant des paramètres, on utilise un tableau Twig pour donner des valeurs a chaque paramètre #}
+            {# Ici 'id' est associé à l'id de l'article #}
+            <a href="{{ path('article_afficher', { 'id': article.id }) }}">
+                Lire l'article
+            </a>
+        </p>
+
+    {% else %}
+        {# Section affichée s'il n'y a pas d'articles #}
+        <p>
+            Aucun article publié pour le moment...
+        </p>
+    {% endfor %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+}
+
+.alert-success {
+    background-color: green;
+    color: white;
+}
